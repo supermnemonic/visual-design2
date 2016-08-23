@@ -1,0 +1,32 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
+         <!--Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="EventTheme" parent="Theme.AppCompat.Light">
+        <!--Customize your theme here. -->
+        <item name="colorPrimary">#ffffff</item>
+        <!--<item name="colorPrimaryDark">#000000</item>-->
+        <!--<item name="colorAccent">#c5b459</item>-->
+        <item name="android:windowContentOverlay">@drawable/line_actionbar_articledetail</item>
+        <item name="homeAsUpIndicator">@drawable/button_event_back_style</item>
+        <item name="android:textColorPrimary">#c5b458</item>
+    </style>
+
+    <style name="AppTheme2" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/white</item>
+    </style>
+
+    <style name="ToolbarColoredBackArrow" parent="AppTheme">
+        <item name="android:textColorSecondary">#FFFFFF</item>
+    </style>
+
+</resources>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/loadingText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="asdasdsad"
+        android:textAlignment="center"
+        android:textSize="20dp"/>
+
+    <GridView
+        android:id="@+id/guestGrid"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:columnWidth="90dp"
+        android:stretchMode="columnWidth"
+        android:numColumns="2"
+        android:verticalSpacing="40dp"
+        android:clipToPadding="false"
+        android:paddingTop="50dp"
+        android:paddingBottom="50dp"
+        tools:listitem="@layout/item_list_guest"/>
+
+</LinearLayout>

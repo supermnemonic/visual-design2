@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_validation"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Selamat Datang!"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:layout_margin="40dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Sertakan gambar profil Anda untuk melengkapi profil."
+        android:textSize="18dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="55dp"
+        android:layout_marginRight="55dp"/>
+
+    <ImageView
+        android:id="@+id/add_photo"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:src="@drawable/btn_add_photo"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        />
+
+    <EditText
+        android:id="@+id/edit_person_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/text_field"
+        android:hint="@string/edit_person_name"
+        android:singleLine="true"
+        android:layout_margin="20dp"
+        android:textSize="17dp"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:alpha="0.9"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:layout_margin="30dp"
+        android:background="@drawable/button_submit_style"
+        android:onClick="onSubmitButtonClicked"
+        android:text="@string/button_next"
+        android:textColor="@color/white"
+        android:textStyle="bold"/>
+
+</LinearLayout>
