@@ -6,17 +6,17 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by iComputer on 15-07-2016.
  */
-public class Guest {
+public class Guest extends RealmObject {
+    @PrimaryKey
     private int id;
     private String name;
     private Date birthdate;
-
-    public Guest() {
-
-    }
 
     public Guest (int id, String name, Date birthdate) {
         this.id = id;
@@ -48,15 +48,4 @@ public class Guest {
         return birthdate;
     }
 
-    public Date convertBirthdate() {
-//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
-//        Date result = new Date();
-//        try {
-//            result =  df.parse(birthdate);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        return result;
-        return null;
-    }
 }
