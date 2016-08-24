@@ -14,11 +14,13 @@ import io.realm.annotations.PrimaryKey;
  */
 public class Guest extends RealmObject {
     @PrimaryKey
-    private int id;
+    private long id;
     private String name;
     private Date birthdate;
 
-    public Guest (int id, String name, Date birthdate) {
+    public Guest(){}
+
+    public Guest (long id, String name, Date birthdate) {
         this.id = id;
         this.name = name;
         this.birthdate = birthdate;
@@ -36,7 +38,7 @@ public class Guest extends RealmObject {
         this.name = name;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
