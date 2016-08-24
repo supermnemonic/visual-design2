@@ -5,7 +5,7 @@ android {
     buildToolsVersion "24.0.0"
 
     defaultConfig {
-        applicationId "com.mnemonic.icomputer.visualdesign"
+        applicationId "com.mnemonic.icomputer.visualdesign2"
         minSdkVersion 8
         targetSdkVersion 24
         versionCode 1
@@ -26,4 +26,5 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    apply plugin: 'realm-android'
 }

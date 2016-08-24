@@ -1,4 +1,4 @@
-package com.mnemonic.icomputer.visualdesign;
+package com.mnemonic.icomputer.visualdesign2;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

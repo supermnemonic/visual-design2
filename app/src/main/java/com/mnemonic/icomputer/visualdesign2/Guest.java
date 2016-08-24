@@ -1,4 +1,4 @@
-package com.mnemonic.icomputer.visualdesign;
+package com.mnemonic.icomputer.visualdesign2;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -13,6 +13,10 @@ public class Guest {
     private int id;
     private String name;
     private Date birthdate;
+
+    public Guest() {
+
+    }
 
     public Guest (int id, String name, Date birthdate) {
         this.id = id;
@@ -42,5 +46,17 @@ public class Guest {
 
     public Date getBirthdate() {
         return birthdate;
+    }
+
+    public Date convertBirthdate() {
+//        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+//        Date result = new Date();
+//        try {
+//            result =  df.parse(birthdate);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        return result;
+        return null;
     }
 }

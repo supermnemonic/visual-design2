@@ -11,8 +11,8 @@
     <style name="EventTheme" parent="Theme.AppCompat.Light">
         <!--Customize your theme here. -->
         <item name="colorPrimary">#ffffff</item>
-        <!--<item name="colorPrimaryDark">#000000</item>-->
-        <!--<item name="colorAccent">#c5b459</item>-->
+        <!--<item textViewName="colorPrimaryDark">#000000</item>-->
+        <!--<item textViewName="colorAccent">#c5b459</item>-->
         <item name="android:windowContentOverlay">@drawable/line_actionbar_articledetail</item>
         <item name="homeAsUpIndicator">@drawable/button_event_back_style</item>
         <item name="android:textColorPrimary">#c5b458</item>

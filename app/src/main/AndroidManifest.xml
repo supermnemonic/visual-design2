@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mnemonic.icomputer.visualdesign">
+    package="com.mnemonic.icomputer.visualdesign2">
 
     <application
         android:allowBackup="true"
@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
         <activity
-            android:name="com.mnemonic.icomputer.visualdesign.HomeActivity"
+            android:name="com.mnemonic.icomputer.visualdesign2.HomeActivity"
             android:theme="@style/AppTheme2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -16,32 +16,32 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.mnemonic.icomputer.visualdesign.MainScreenActivity"
+            android:name="com.mnemonic.icomputer.visualdesign2.MainScreenActivity"
             android:label="@string/title_activity_main_screen"
-            android:parentActivityName="com.mnemonic.icomputer.visualdesign.HomeActivity"
+            android:parentActivityName="com.mnemonic.icomputer.visualdesign2.HomeActivity"
             android:theme="@style/AppTheme2"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mnemonic.icomputer.visualdesign.HomeActivity" />
+                android:value="com.mnemonic.icomputer.visualdesign2.HomeActivity" />
         </activity>
         <activity
-            android:name="com.mnemonic.icomputer.visualdesign.EventActivity"
+            android:name="com.mnemonic.icomputer.visualdesign2.EventActivity"
             android:label="@string/title_activity_event"
-            android:parentActivityName="com.mnemonic.icomputer.visualdesign.MainScreenActivity"
+            android:parentActivityName="com.mnemonic.icomputer.visualdesign2.MainScreenActivity"
             android:theme="@style/EventTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mnemonic.icomputer.visualdesign.MainScreenActivity" />
+                android:value="com.mnemonic.icomputer.visualdesign2.MainScreenActivity" />
         </activity>
         <activity
-            android:name="com.mnemonic.icomputer.visualdesign.GuestActivity"
+            android:name="com.mnemonic.icomputer.visualdesign2.GuestActivity"
             android:label="@string/title_activity_guest"
-            android:parentActivityName="com.mnemonic.icomputer.visualdesign.MainScreenActivity"
+            android:parentActivityName="com.mnemonic.icomputer.visualdesign2.MainScreenActivity"
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mnemonic.icomputer.visualdesign.MainScreenActivity" />
+                android:value="com.mnemonic.icomputer.visualdesign2.MainScreenActivity" />
         </activity>
     </application>
 
