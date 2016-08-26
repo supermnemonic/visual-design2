@@ -7,6 +7,8 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.util.List;
 
@@ -23,9 +25,13 @@ public class EventMapViewFragment extends Fragment {
     private ViewPager viewPagerEventSlide;
     private EventSlideAdapter pagerAdapterEventSlide;
 
+    private int currentPosition;
+
 
     public interface OnEventMapViewListener {
         public List<Event> getEvents();
+
+        public void replaceMapFragment(int startPosition);
 
         public void onSlidePageChanged(int currentItem);
     }
@@ -41,6 +47,8 @@ public class EventMapViewFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.event_mapview_fragment, container, false);
         rootView.setTag(TAG);
 
+        currentPosition = getArguments().getInt(EventMapFragment.ARG_START_POSITION);
+
         // Instantiate a ViewPager and a PagerAdapter.
         viewPagerEventSlide = (ViewPager) rootView.findViewById(R.id.pager);
         pagerAdapterEventSlide = new EventSlideAdapter(getActivity().getSupportFragmentManager(), callback.getEvents());
@@ -49,6 +57,7 @@ public class EventMapViewFragment extends Fragment {
         int marginPx = getResources().getDimensionPixelOffset(R.dimen.viewpager_margin);
         viewPagerEventSlide.setPageMargin(marginPx);
         viewPagerEventSlide.setOffscreenPageLimit(2);
+        viewPagerEventSlide.setCurrentItem(currentPosition, true);
 
         viewPagerEventSlide.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -64,6 +73,7 @@ public class EventMapViewFragment extends Fragment {
             @Override
             public void onPageScrollStateChanged(int state) {
                 if (state == ViewPager.SCROLL_STATE_IDLE) {
+                    setCurrentPositionArgs(viewPagerEventSlide.getCurrentItem());
                     callback.onSlidePageChanged(viewPagerEventSlide.getCurrentItem());
                 }
             }
@@ -72,11 +82,46 @@ public class EventMapViewFragment extends Fragment {
         return rootView;
     }
 
+    public void setCurrentPositionArgs(int currentPosition) {
+        this.currentPosition = currentPosition;
+        this.getArguments().putInt(EventMapFragment.ARG_START_POSITION, currentPosition);
+    }
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+
+        if (nextAnim == 0) {
+            callback.replaceMapFragment(currentPosition);
+            return super.onCreateAnimation(transit, enter, nextAnim);
+        }
+
+        Animation anim = AnimationUtils.loadAnimation(getActivity(), nextAnim);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                callback.replaceMapFragment(currentPosition);
+            }
+        });
+        return anim;
+    }
+
     public int getCurrentSlidePage() {
         return viewPagerEventSlide.getCurrentItem();
     }
 
     public void setCurrentSlidePage(int position) {
+        setCurrentPositionArgs(position);
         viewPagerEventSlide.setCurrentItem(position, true);
     }
 

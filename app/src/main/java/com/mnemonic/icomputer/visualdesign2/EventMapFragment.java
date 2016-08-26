@@ -3,25 +3,28 @@ package com.mnemonic.icomputer.visualdesign2;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.ui.IconGenerator;
 
 import java.util.HashMap;
 import java.util.List;
 
-import io.realm.Realm;
-import io.realm.RealmAsyncTask;
-import io.realm.RealmConfiguration;
+import static android.graphics.Typeface.BOLD;
+import static android.graphics.Typeface.ITALIC;
+import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
 
 /**
  * Created by iComputer on 25-08-2016.
@@ -31,24 +34,23 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
     public static final String ARG_START_POSITION = "arg_start_position";
 
     public static final String TAG = "EventMapFragment";
-    private static final float DEF_ZOOM = 17.0f;
+    private static final float DEF_ZOOM = 16.4f;
     private GoogleMap map;
     private MapView mapView;
-    private HashMap markerIdHash;
-    private HashMap markerHash;
+    private HashMap<Marker, Integer> markerIdHash;
+    private HashMap<Integer, Marker> markerHash;
 
-    private int startPosition;
+    private List<Event> events;
 
-    private Realm realm;
-    private RealmAsyncTask realmAsyncTask;
-    private RealmConfiguration realmConfig;
+    private int currentPosition;
 
     private OnEventMapListener callback;
+    IconGenerator iconFactory;
 
     public interface OnEventMapListener {
         public void onMarkerClick(int position);
+
         public List<Event> getEvents();
-        public int getSlideCurrentPage();
     }
 
     @Override
@@ -56,17 +58,14 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
         View rootView = inflater.inflate(R.layout.event_map_fragment, container, false);
         rootView.setTag(TAG);
 
-        startPosition = getArguments().getInt(ARG_START_POSITION);
+        currentPosition = getArguments().getInt(ARG_START_POSITION);
 
         mapView = (MapView) rootView.findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
 
-        realmConfig = new RealmConfiguration.Builder(getActivity())
-                .deleteRealmIfMigrationNeeded()
-                .build();
-        realm = Realm.getInstance(realmConfig);
+        events = callback.getEvents();
 
         return rootView;
     }
@@ -80,28 +79,23 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
         map = googleMap;
 
         //RealmResults<Event> events = realm.where(Event.class).findAll();
-        List<Event> events = callback.getEvents();
-        markerIdHash = new HashMap();
+        markerIdHash = new HashMap<>();
         markerHash = new HashMap();
 
-        for (int i=0;i<events.size();i++) {
+        iconFactory = new IconGenerator(getActivity());
+        //iconFactory.setColor(Color.CYAN);
+        iconFactory.setStyle(IconGenerator.STYLE_ORANGE);
+        for (int i = 0; i < events.size(); i++) {
             LatLng pos = new LatLng(events.get(i).getLat(), events.get(i).getLng());
-            Marker marker = map.addMarker(new MarkerOptions().position(pos).title(events.get(i).getName()));
-            markerIdHash.put(marker,i);
-            markerHash.put(i,marker);
+            Marker marker = addIcon(iconFactory, events.get(i).getName(), pos);
+            markerIdHash.put(marker, i);
+            markerHash.put(i, marker);
         }
 
-        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-            @Override
-            public void onInfoWindowClick(Marker marker) {
-                animateCameraTo(marker.getPosition());
-                callback.onMarkerClick((Integer) markerIdHash.get(marker));
-            }
-        });
         map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                animateCameraTo(marker.getPosition());
+                animateCameraToMarker(marker);
                 callback.onMarkerClick((Integer) markerIdHash.get(marker));
                 return false;
             }
@@ -109,31 +103,70 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
 
         //int i = callback.getSlideCurrentPage();
         //LatLng pos = new LatLng(events.get(i).getLat(), events.get(i).getLng());
-        moveCameraToMarker(startPosition);
+        moveCameraToMarkerId(currentPosition, false);
     }
 
-    private void animateCameraTo(LatLng pos) {
-        map.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, DEF_ZOOM));
-    }
-
-    public void animateCameraToMarker(int markerId) {
-        Marker marker = (Marker) markerHash.get(markerId);
-        if (marker != null) {
-            LatLng pos = marker.getPosition();
-            animateCameraTo(pos);
-
-            marker.showInfoWindow();
+    private void resetMarkerStyle() {
+        iconFactory.setStyle(IconGenerator.STYLE_ORANGE);
+        for (Integer position : markerHash.keySet()) {
+            Marker marker = markerHash.get(position);
+            marker.setIcon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(events.get(position).getName())));
         }
     }
 
-    public void moveCameraToMarker(int markerId) {
-        Marker marker = (Marker) markerHash.get(markerId);
-        if (marker != null) {
-            LatLng pos = marker.getPosition();
+    private Marker addIcon(IconGenerator iconFactory, CharSequence text, LatLng position) {
+        MarkerOptions markerOptions = new MarkerOptions().
+                icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(text))).
+                position(position).
+                anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());
+
+        return map.addMarker(markerOptions);
+    }
+
+    public void animateCameraToMarkerId(int markerId) {
+        moveCameraToMarkerId(markerId, true);
+    }
+
+    public void animateCameraToMarker(Marker marker) {
+        moveCameraToMarker(marker, true);
+    }
+
+    public void moveCameraToMarkerId(int markerId, boolean animate) {
+        Marker marker = markerHash.get(markerId);
+        moveCameraToPos(marker.getPosition(), animate);
+
+        resetMarkerStyle();
+        setMarkerSelected(marker, markerIdHash.get(marker));
+    }
+
+    public void moveCameraToMarker(Marker marker, boolean animate) {
+        moveCameraToPos(marker.getPosition(), animate);
+
+        resetMarkerStyle();
+        setMarkerSelected(marker, markerIdHash.get(marker));
+    }
+
+    public void moveCameraToPos(LatLng pos, boolean animate) {
+        if (animate)
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(pos, DEF_ZOOM));
+        else
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, DEF_ZOOM));
 
-            marker.showInfoWindow();
-        }
+    }
+
+    private void setMarkerSelected(Marker marker, int markerId) {
+        iconFactory.setStyle(IconGenerator.STYLE_GREEN);
+        marker.setIcon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(events.get(markerId).getName())));
+    }
+
+    private CharSequence makeCharSequence() {
+        String prefix = "Mixing ";
+        String suffix = "different fonts";
+        String sequence = prefix + suffix;
+        SpannableStringBuilder ssb = new SpannableStringBuilder(sequence);
+        ssb.setSpan(new StyleSpan(ITALIC), 0, prefix.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        ssb.setSpan(new StyleSpan(BOLD), prefix.length(), sequence.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+        return ssb;
     }
 
     @Override
@@ -152,7 +185,6 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-        realm.close();
     }
 
     @Override

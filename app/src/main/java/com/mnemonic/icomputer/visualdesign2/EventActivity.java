@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Handler;
 
 import io.realm.Realm;
 import io.realm.RealmAsyncTask;
@@ -84,12 +85,7 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
         }
 
         if (savedInstanceState == null) {
-            //FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            EventListFragment fragment = new EventListFragment();
-            fragment.setArguments(getIntent().getExtras());
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment, EventListFragment.TAG).commit();
-
+            replaceToEventListFragment(false);
         }
     }
 
@@ -118,20 +114,10 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
     }
 
     @Override
-    public int getSlideCurrentPage() {
-        EventMapViewFragment eventMapViewFragment = (EventMapViewFragment) getSupportFragmentManager().findFragmentByTag(EventMapViewFragment.TAG);
-        if (eventMapViewFragment != null && eventMapViewFragment.isVisible()) {
-            return eventMapViewFragment.getCurrentSlidePage();
-        } else {
-            return 0;
-        }
-    }
-
-    @Override
     public void onSlidePageChanged(int currentItem) {
         EventMapFragment map = (EventMapFragment) getSupportFragmentManager().findFragmentByTag(EventMapFragment.TAG);
         if (map != null && map.isVisible()) {
-            map.animateCameraToMarker(currentItem);
+            map.animateCameraToMarkerId(currentItem);
         }
     }
 
@@ -144,6 +130,7 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
 //        setResult(RESULT_OK, intent);
 //        finish();
         replaceToEventMapFragment(position);
+        onMarkerClick(position);
     }
 
     private double[][] pos = {
@@ -197,6 +184,19 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
         return true;
     }
 
+    @Override
+    public void replaceMapFragment(int startPosition) {
+        Bundle args = new Bundle();
+        args.putInt(EventMapFragment.ARG_START_POSITION, startPosition);
+
+        EventMapFragment mapFragment = new EventMapFragment();
+        mapFragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.fragment_map_container, mapFragment, EventMapFragment.TAG);
+        transaction.commit();
+    }
+
     public void toggleFragment() {
         EventListFragment eventListFragment = (EventListFragment) getSupportFragmentManager().findFragmentByTag(EventListFragment.TAG);
         EventMapViewFragment eventMapViewFragment = (EventMapViewFragment) getSupportFragmentManager().findFragmentByTag(EventMapViewFragment.TAG);
@@ -204,14 +204,16 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
         if (eventMapViewFragment == null) {
             replaceToEventMapFragment();
         } else if (eventListFragment == null) {
-            replaceToEventListFragment();
+            replaceToEventListFragment(true);
         }
     }
 
-    private void replaceToEventListFragment() {
+    private void replaceToEventListFragment(boolean animate) {
         EventListFragment listFragment = new EventListFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (animate)
+            transaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_right);
         transaction.replace(R.id.fragment_container, listFragment, EventListFragment.TAG);
         transaction.commit();
     }
@@ -221,17 +223,23 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
     }
 
     private void replaceToEventMapFragment(int startPosition) {
-        EventMapViewFragment mapViewFragment = new EventMapViewFragment();
-
-        EventMapFragment mapFragment = new EventMapFragment();
         Bundle args = new Bundle();
         args.putInt(EventMapFragment.ARG_START_POSITION, startPosition);
+
+        EventMapViewFragment mapViewFragment = new EventMapViewFragment();
+        mapViewFragment.setArguments(args);
+
+        EventMapFragment mapFragment = new EventMapFragment();
         mapFragment.setArguments(args);
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_left);
         transaction.replace(R.id.fragment_container, mapViewFragment, EventMapViewFragment.TAG);
-        transaction.replace(R.id.fragment_map_container, mapFragment, EventMapFragment.TAG);
         transaction.commit();
+
+//        transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.replace(R.id.fragment_map_container, mapFragment, EventMapFragment.TAG);
+//        transaction.commit();
     }
 
     @Override
