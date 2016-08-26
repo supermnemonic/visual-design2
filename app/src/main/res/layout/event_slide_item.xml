@@ -1,27 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/viewpager_margin_fix_y"
     android:paddingLeft="@dimen/viewpager_margin_fix_x"
     android:paddingRight="@dimen/viewpager_margin_fix_x"
-    android:paddingTop="@dimen/viewpager_margin_fix_y"
-    android:paddingBottom="@dimen/viewpager_margin_fix_y">
+    android:paddingTop="@dimen/viewpager_margin_fix_y">
 
     <ImageView
         android:id="@+id/event_item_slide_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/r2"
-        android:scaleType="centerCrop"/>
+        android:contentDescription=""
+        android:scaleType="centerCrop"
+        android:src="@drawable/r2" />
+
     <TextView
         android:id="@+id/event_item_slide_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:text="This is title"
+        android:background="@color/overlay_gray"
         android:padding="10dp"
-        android:textSize="14sp"
+        android:text="This is title"
         android:textColor="#FFFFFF"
-        android:background="@color/overlay_gray"/>
+        android:textSize="14sp" />
 
 </RelativeLayout>

@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Selamat Datang!"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:textStyle="bold"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Sertakan gambar profil Anda untuk melengkapi profil."
-        android:textSize="18dp"
+        android:textSize="18sp"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:layout_marginTop="10dp"
@@ -30,6 +30,7 @@
         android:layout_marginRight="55dp"/>
 
     <ImageView
+        android:contentDescription=""
         android:id="@+id/add_photo"
         android:layout_width="130dp"
         android:layout_height="130dp"
@@ -46,7 +47,7 @@
         android:hint="@string/edit_person_name"
         android:singleLine="true"
         android:layout_margin="20dp"
-        android:textSize="17dp"
+        android:textSize="17sp"
         android:textColor="@color/white"
         android:textColorHint="@color/white"
         android:alpha="0.9"/>

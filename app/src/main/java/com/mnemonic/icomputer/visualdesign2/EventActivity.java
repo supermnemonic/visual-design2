@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
 
 import io.realm.Realm;
 import io.realm.RealmAsyncTask;
@@ -26,7 +25,7 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
 
     public final static String EXTRA_CHOOSED_EVENT_NAME = "com.mnemonic.icomputer.screeningtest.CHOOSED_EVENT_NAME";
 
-    private String dum1 = "Lorem ipsum dolor sit amet, usu in vitae ornatus fabellas. Eu perfecto sententiae reprimique eum. Ferri complectitur at pro.";
+    private final String dum1 = "Lorem ipsum dolor sit amet, usu in vitae ornatus fabellas. Eu perfecto sententiae reprimique eum. Ferri complectitur at pro.";
 
     private List<Event> events;
 
@@ -133,7 +132,7 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
         onMarkerClick(position);
     }
 
-    private double[][] pos = {
+    private final double[][] pos = {
             {-6.888739, 107.615672},
             {-6.8876847, 107.6116776},
             {-6.890339, 107.612103},
@@ -148,7 +147,7 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
     };
 
     private List<Event> createDummyEvents() {
-        List<Event> events = new ArrayList<Event>();
+        List<Event> events = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {
             events.add(new Event(i, "Event-" + i, Event.createDate("2016-1-" + i), R.drawable.r1, "tag1", dum1, pos[i][0], pos[i][1]));
         }
@@ -197,7 +196,7 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
         transaction.commit();
     }
 
-    public void toggleFragment() {
+    private void toggleFragment() {
         EventListFragment eventListFragment = (EventListFragment) getSupportFragmentManager().findFragmentByTag(EventListFragment.TAG);
         EventMapViewFragment eventMapViewFragment = (EventMapViewFragment) getSupportFragmentManager().findFragmentByTag(EventMapViewFragment.TAG);
 
@@ -247,9 +246,6 @@ public class EventActivity extends AppCompatActivity implements EventListFragmen
 
         switch (item.getItemId()) {
             case R.id.action_new_media:
-                //Intent intent = new Intent(this, MapsActivity.class);
-                //startActivity(intent);
-
                 toggleFragment();
                 return true;
             default:

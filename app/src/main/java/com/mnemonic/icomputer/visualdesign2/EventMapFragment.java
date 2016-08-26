@@ -45,12 +45,12 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
     private int currentPosition;
 
     private OnEventMapListener callback;
-    IconGenerator iconFactory;
+    private IconGenerator iconFactory;
 
     public interface OnEventMapListener {
-        public void onMarkerClick(int position);
+        void onMarkerClick(int position);
 
-        public List<Event> getEvents();
+        List<Event> getEvents();
     }
 
     @Override
@@ -80,7 +80,7 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
 
         //RealmResults<Event> events = realm.where(Event.class).findAll();
         markerIdHash = new HashMap<>();
-        markerHash = new HashMap();
+        markerHash = new HashMap<>();
 
         iconFactory = new IconGenerator(getActivity());
         //iconFactory.setColor(Color.CYAN);
@@ -96,7 +96,7 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 animateCameraToMarker(marker);
-                callback.onMarkerClick((Integer) markerIdHash.get(marker));
+                callback.onMarkerClick(markerIdHash.get(marker));
                 return false;
             }
         });
@@ -140,7 +140,7 @@ public class EventMapFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void moveCameraToMarker(Marker marker, boolean animate) {
-        moveCameraToPos(marker.getPosition(), animate);
+        moveCameraToPos(marker.getPosition(), true);
 
         resetMarkerStyle();
         setMarkerSelected(marker, markerIdHash.get(marker));

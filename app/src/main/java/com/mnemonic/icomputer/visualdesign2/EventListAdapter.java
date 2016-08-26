@@ -12,19 +12,18 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by iComputer on 15-07-2016.
  */
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
 
-    private final Context context;
     private final Fragment fragment;
-    private List<Event> events;
-    private LayoutInflater layoutInflater;
+    private final List<Event> events;
+    private final LayoutInflater layoutInflater;
 
     public EventListAdapter(Context context, Fragment fragment, List<Event> events) {
-        this.context = context;
         this.events = events;
         this.layoutInflater = LayoutInflater.from(context);
         this.fragment = fragment;
@@ -42,7 +41,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         //holder.imageViewIcon.setScaleType(ImageView.ScaleType.FIT_CENTER);
         holder.textViewName.setText(events.get(position).getName());
         holder.imageViewIcon.setImageResource(events.get(position).getImage());
-        holder.textViewDate.setText(new SimpleDateFormat("MM dd yyyy").format(events.get(position).getDate()));
+        holder.textViewDate.setText(new SimpleDateFormat("MM dd yyyy", Locale.ENGLISH).format(events.get(position).getDate()));
         holder.textViewTags.setText(events.get(position).getTags());
         holder.textViewResume.setText(events.get(position).getResume());
     }

@@ -25,19 +25,12 @@ public class EventListFragment extends Fragment implements View.OnClickListener 
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
-    private RecyclerView.LayoutManager recyclerViewLayoutManager;
 
 
     public interface OnEventListListener {
-        public void onRefreshList();
-        public List<Event> getEvents();
-        public void onListSelected(int position);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+        void onRefreshList();
+        List<Event> getEvents();
+        void onListSelected(int position);
     }
 
     @Override
@@ -55,7 +48,7 @@ public class EventListFragment extends Fragment implements View.OnClickListener 
             }
         });
 
-        recyclerViewLayoutManager = new LinearLayoutManager(getActivity());
+        RecyclerView.LayoutManager recyclerViewLayoutManager = new LinearLayoutManager(getActivity());
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.event_recycler_view);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);

@@ -5,6 +5,7 @@
     android:background="@drawable/bg_selector">
 
     <ImageView
+        android:contentDescription=""
         android:id="@+id/guestIcon"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

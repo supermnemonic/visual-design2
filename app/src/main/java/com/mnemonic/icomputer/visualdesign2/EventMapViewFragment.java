@@ -18,7 +18,6 @@ import java.util.List;
 public class EventMapViewFragment extends Fragment {
 
     public static final String TAG = "EventMapViewFragment";
-    private static final float RATIO_SCALE = 0.3f;
 
     private OnEventMapViewListener callback;
 
@@ -29,17 +28,11 @@ public class EventMapViewFragment extends Fragment {
 
 
     public interface OnEventMapViewListener {
-        public List<Event> getEvents();
+        List<Event> getEvents();
 
-        public void replaceMapFragment(int startPosition);
+        void replaceMapFragment(int startPosition);
 
-        public void onSlidePageChanged(int currentItem);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+        void onSlidePageChanged(int currentItem);
     }
 
     @Override
@@ -114,10 +107,6 @@ public class EventMapViewFragment extends Fragment {
             }
         });
         return anim;
-    }
-
-    public int getCurrentSlidePage() {
-        return viewPagerEventSlide.getCurrentItem();
     }
 
     public void setCurrentSlidePage(int position) {

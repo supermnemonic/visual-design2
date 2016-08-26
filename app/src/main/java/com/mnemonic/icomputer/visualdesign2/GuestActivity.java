@@ -31,7 +31,6 @@ public class GuestActivity extends AppCompatActivity implements Callback<List<Gu
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter recyclerViewAdapter;
-    private RecyclerView.LayoutManager recyclerViewLayoutManager;
 
     private List<Guest> guests;
 
@@ -61,7 +60,7 @@ public class GuestActivity extends AppCompatActivity implements Callback<List<Gu
             }
         });
 
-        recyclerViewLayoutManager = new GridLayoutManager(this, 2);
+        RecyclerView.LayoutManager recyclerViewLayoutManager = new GridLayoutManager(this, 2);
 
         recyclerView = (RecyclerView) findViewById(R.id.guest_recycler_view);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
@@ -167,7 +166,7 @@ public class GuestActivity extends AppCompatActivity implements Callback<List<Gu
         int day = Integer.parseInt((String) android.text.format.DateFormat.format("d", guests.get(position).getBirthdate()));
         int month = Integer.parseInt((String) android.text.format.DateFormat.format("MM", guests.get(position).getBirthdate()));
 
-        String msg = "";
+        String msg;
         if (day % 2 == 0 && day % 3 == 0)
             msg = "iOS";
         else if (day % 2 == 0)

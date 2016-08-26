@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 public class MainScreenActivity extends AppCompatActivity {
 
-    public final static int RC_EVENT_CHOOSED = 1;
-    public final static int RC_GUEST_CHOOSED = 2;
+    private final static int RC_EVENT_CHOOSED = 1;
+    private final static int RC_GUEST_CHOOSED = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

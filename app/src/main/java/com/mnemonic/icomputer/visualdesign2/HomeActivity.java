@@ -60,12 +60,11 @@ public class HomeActivity extends AppCompatActivity {
     private boolean isPalindrome(String str) {
         str = str.replaceAll("\\s","");
         int mid = str.length()/2;
-        int last = str.length() - 1;
-        int j = last;
-        for (int i=0;i<mid;i++) {
-            if (str.charAt(i) != str.charAt(j))
+        int end = str.length() - 1;
+        for (int start=0;start<mid;start++) {
+            if (str.charAt(start) != str.charAt(end))
                 return false;
-            j--;
+            end--;
         }
         return true;
     }

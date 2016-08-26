@@ -2,20 +2,14 @@ package com.mnemonic.icomputer.visualdesign2;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -25,8 +19,8 @@ import java.util.List;
 public class GuestAdapter extends RecyclerView.Adapter<GuestAdapter.ViewHolder> {
 
     private final Context context;
-    private List<Guest> guests;
-    private LayoutInflater layoutInflater;
+    private final List<Guest> guests;
+    private final LayoutInflater layoutInflater;
 
     public GuestAdapter(Context context, List<Guest> guests) {
         this.context = context;

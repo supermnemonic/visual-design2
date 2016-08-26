@@ -5,8 +5,7 @@
     <string name="button_choose_event">Pilih Event</string>
     <string name="button_choose_guest">Pilih Guest</string>
 
-    <string name="title_activity_main_screen"></string>
+    <string name="title_activity_main_screen"/>
     <string name="title_activity_event">Events</string>
     <string name="title_activity_guest">Guests</string>
-    <string name="title_activity_maps">Map</string>
 </resources>

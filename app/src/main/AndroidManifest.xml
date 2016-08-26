@@ -60,15 +60,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mnemonic.icomputer.visualdesign2.MainScreenActivity" />
         </activity>
-        <!--<activity-->
-            <!--android:name=".MapsActivity"-->
-            <!--android:label="Map google"-->
-            <!--android:parentActivityName=".EventActivity"-->
-            <!--android:theme="@style/AppTheme">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.PARENT_ACTIVITY"-->
-                <!--android:value="com.mnemonic.icomputer.visualdesign2.EventActivity" />-->
-        <!--</activity>-->
 
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
