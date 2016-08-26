@@ -66,15 +66,14 @@ public class GuestAdapter extends RecyclerView.Adapter<GuestAdapter.ViewHolder> 
         return guests.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
-        //public final View rootView;
+    protected static class ViewHolder extends RecyclerView.ViewHolder {
+
         public final TextView textViewName;
         public final ImageView imageViewIcon;
 
         public ViewHolder(View view) {
             super(view);
 
-            //this.rootView = view;
             this.textViewName = (TextView) view.findViewById(R.id.guestName);
             this.imageViewIcon = (ImageView) view.findViewById(R.id.guestIcon);
 

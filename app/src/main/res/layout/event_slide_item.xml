@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/viewpager_margin_fix_x"
+    android:paddingRight="@dimen/viewpager_margin_fix_x"
+    android:paddingTop="@dimen/viewpager_margin_fix_y"
+    android:paddingBottom="@dimen/viewpager_margin_fix_y">
+
+    <ImageView
+        android:id="@+id/event_item_slide_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/r2"
+        android:scaleType="centerCrop"/>
+    <TextView
+        android:id="@+id/event_item_slide_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="This is title"
+        android:padding="10dp"
+        android:textSize="14sp"
+        android:textColor="#FFFFFF"
+        android:background="@color/overlay_gray"/>
+
+</RelativeLayout>

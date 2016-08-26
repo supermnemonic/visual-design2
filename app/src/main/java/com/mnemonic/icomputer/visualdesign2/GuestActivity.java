@@ -9,17 +9,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmAsyncTask;
@@ -39,10 +33,7 @@ public class GuestActivity extends AppCompatActivity implements Callback<List<Gu
     private RecyclerView.Adapter recyclerViewAdapter;
     private RecyclerView.LayoutManager recyclerViewLayoutManager;
 
-    //private GridView gridView;
-
     private List<Guest> guests;
-    //private GuestAdapter adapter;
 
     private Realm realm;
     private RealmAsyncTask realmAsyncTask;
@@ -57,10 +48,13 @@ public class GuestActivity extends AppCompatActivity implements Callback<List<Gu
         getSupportActionBar().setHomeButtonEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(false);
 
-        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_refresh);
+        swipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.guest_swipe_refresh);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                TextView textStatus = (TextView) findViewById(R.id.text_status);
+                textStatus.setVisibility(View.GONE);
+
                 GuestAPIService api = RetroClient.getGuestAPIService();
                 Call<List<Guest>> call = api.getMyJSON();
                 call.enqueue(GuestActivity.this);
@@ -69,25 +63,29 @@ public class GuestActivity extends AppCompatActivity implements Callback<List<Gu
 
         recyclerViewLayoutManager = new GridLayoutManager(this, 2);
 
-        int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.spacing);
-        recyclerView = (RecyclerView) findViewById(R.id.grid_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.guest_recycler_view);
         recyclerView.setLayoutManager(recyclerViewLayoutManager);
         recyclerView.setHasFixedSize(true);
 
+        guests = new ArrayList<>();
+        recyclerViewAdapter = new GuestAdapter(this, guests);
+        recyclerView.setAdapter(recyclerViewAdapter);
+
         // Create the Realm configuration
-        realmConfig = new RealmConfiguration.Builder(this).build();
+        realmConfig = new RealmConfiguration.Builder(this)
+                .deleteRealmIfMigrationNeeded()
+                .build();
         // Open the Realm for the UI thread.
         realm = Realm.getInstance(realmConfig);
 
-        if (realm.isEmpty()) {
+        if (realm.where(Guest.class).findAll().isEmpty()) {
             GuestAPIService api = RetroClient.getGuestAPIService();
             Call<List<Guest>> call = api.getMyJSON();
             call.enqueue(this);
         } else {
             RealmResults<Guest> storedGuests = realm.where(Guest.class).findAll();
-            guests = storedGuests;
-            recyclerViewAdapter = new GuestAdapter(this, guests);
-            recyclerView.setAdapter(recyclerViewAdapter);
+            guests.addAll(storedGuests);
+            recyclerViewAdapter.notifyDataSetChanged();
         }
     }
 
@@ -125,40 +123,41 @@ public class GuestActivity extends AppCompatActivity implements Callback<List<Gu
     @Override
     public void onResponse(Call<List<Guest>> call, Response<List<Guest>> response) {
         Log.d("RESPONSE", response.message());
-        if(response.isSuccessful()) {
-            guests = response.body();
 
-            recyclerViewAdapter = new GuestAdapter(this, guests);
-            recyclerView.setAdapter(recyclerViewAdapter);
-            //gridView.setAdapter(adapter);
+        TextView textStatus = (TextView) findViewById(R.id.text_status);
+        textStatus.setVisibility(View.GONE);
+
+        if(response.isSuccessful()) {
+            guests.clear();
+            guests.addAll(response.body());
+            //guests.add(createDummyGuest());
 
             if (realm.isClosed())
                 realm = Realm.getInstance(realmConfig);
+            realm.beginTransaction();
+            realm.copyToRealmOrUpdate(guests);
+            realm.commitTransaction();
 
-            realmAsyncTask = realm.executeTransactionAsync(new Realm.Transaction() {
-                @Override
-                public void execute(Realm bgRealm) {
-                    bgRealm.copyToRealmOrUpdate(guests);
-                }
-            }, new Realm.Transaction.OnSuccess() {
-                @Override
-                public void onSuccess() {
-                    Toast.makeText(GuestActivity.this, "saved", Toast.LENGTH_LONG).show();
-                }
-            }, new Realm.Transaction.OnError() {
-                @Override
-                public void onError(Throwable error) {
-                    Log.d("REALM_ERROR", error.getMessage());
-                }
-            });
-
-            swipeRefreshLayout.setRefreshing(false);
+            recyclerViewAdapter.notifyDataSetChanged();
         }
+
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    private Guest createDummyGuest() {
+        long i = realm.where(Guest.class).count()+1;
+        return new Guest(i,"Guest-"+i,Guest.createDate("2016-8-"+i));
     }
 
     @Override
     public void onFailure(Call<List<Guest>> call, Throwable t) {
         Log.d("FAILURE", t.getMessage());
+
+        TextView textStatus = (TextView) findViewById(R.id.text_status);
+        textStatus.setText(t.getMessage());
+        textStatus.setVisibility(View.VISIBLE);
+
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override

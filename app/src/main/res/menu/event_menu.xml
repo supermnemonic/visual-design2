@@ -12,5 +12,5 @@
     <item android:id="@+id/action_new_media"
         android:icon="@drawable/button_event_newmedia"
         android:title="New Media"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"        />
 </menu>

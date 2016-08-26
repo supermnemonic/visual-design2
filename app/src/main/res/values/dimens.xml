@@ -7,4 +7,10 @@
     <dimen name="item_offset">40dp</dimen>
     <dimen name="spacing">20dp</dimen>
     <dimen name="edge">30dp</dimen>
+
+    <dimen name="card_corner_radius">3dp</dimen>
+    <dimen name="card_elevation">2dp</dimen>
+    <dimen name="viewpager_margin">-120dp</dimen>
+    <dimen name="viewpager_margin_fix_x">100dp</dimen>
+    <dimen name="viewpager_margin_fix_y">20dp</dimen>
 </resources>

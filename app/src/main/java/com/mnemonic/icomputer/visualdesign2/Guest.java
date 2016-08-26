@@ -50,4 +50,15 @@ public class Guest extends RealmObject {
         return birthdate;
     }
 
+    public static Date createDate(String stringDate) {
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        Date result = new Date();
+        try {
+            result = df.parse(stringDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }

@@ -7,4 +7,5 @@
     <color name="pressed">#e6e6e6</color>
     <color name="selected">#b4c1e6</color>
     <color name="transparent">#00ffffff</color>
+    <color name="overlay_gray">#64000000</color>
 </resources>
